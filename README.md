@@ -1,4 +1,4 @@
-# FullStack 개발 - 자판기 만들기
+# 🍔 FullStack 개발 - 자판기 만들기
 
 <strong>[ API 명세 ]</strong>
 - /api/products (GET) : 전체 데이터 목록 조회
