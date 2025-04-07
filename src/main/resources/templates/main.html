@@ -1,10 +1,129 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8" />
+    <title>자판기 프로그램</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-700 text-white min-h-screen flex flex-col items-center p-6">
+<h1 id="titleText" class="bg-white text-red-700 text-2xl font-bold px-6 py-3 rounded-lg mb-6">★ 자판기 프로그램 ★</h1>
 
+<div class="flex justify-between items-center w-full max-w-4xl mb-4">
+    <button id="listButton" class="bg-white text-red-700 font-bold px-4 py-2 rounded">▽ 자판기 상품 목록</button>
+    <div class="flex items-center space-x-2">
+        <span>한글</span>
+        <button onclick="toggleLang(this)" class="w-12 h-6 bg-white rounded-full relative">
+            <span class="dot absolute top-0.5 left-1 w-5 h-5 bg-red-700 rounded-full transition-all duration-300"></span>
+        </button>
+        <span>ENG</span>
+    </div>
+    <div class="text-2xl">➖</div>
+</div>
+
+<div class="bg-white text-black rounded-lg w-full max-w-4xl p-4 mb-4">
+    <p id="emptyMessage" class="text-center font-medium py-4">상품 목록이 비어있습니다.</p>
+
+    <table id="productTable" class="w-full table-auto hidden border border-red-300">
+        <thead class="bg-red-100">
+        <tr>
+            <th class="border px-4 py-2">번호</th>
+            <th class="border px-4 py-2">상품명</th>
+            <th class="border px-4 py-2">가격</th>
+            <th class="border px-4 py-2">유통기한</th>
+            <th class="border px-4 py-2">수정</th>
+            <th class="border px-4 py-2">삭제</th>
+        </tr>
+        </thead>
+        <tbody id="productBody">
+        <!-- 데이터 삽입 -->
+        </tbody>
+    </table>
+
+    <p id="countNotice" class="text-red-700 font-bold mt-4">▲ 총 0개의 상품이 있습니다.</p>
+</div>
+
+<button id="addProductBtn" class="bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-3 rounded" onclick="moveToAdd()">상품 추가하기!</button>
+
+<script>
+
+    let listlen = 0;
+
+    function toggleLang(btn) {
+        const dot = btn.querySelector('.dot');
+        dot.classList.toggle('translate-x-5');
+        const isEnglish = dot.classList.contains('translate-x-5');
+
+        const title = document.getElementById('titleText');
+        const listBtn = document.getElementById('listButton');
+        const countNotice = document.getElementById('countNotice');
+        const addProductBtn = document.getElementById('addProductBtn');
+
+        if (isEnglish) {
+          title.textContent = '★ VENDING MACHINE ★';
+          listBtn.textContent = '▽ Product List';
+          countNotice.textContent = `▲ Total (${listlen} item)`;
+          addProductBtn.textContent = 'Add Product';
+        } else {
+          title.textContent = '★ 자판기 프로그램 ★';
+          listBtn.textContent = '▽ 자판기 상품 목록';
+          countNotice.textContent = `▲ 총 ${listlen}개의 상품이 있습니다.`;
+          addProductBtn.textContent = '상품 추가하기!';
+        }
+    }
+
+    function moveToAdd() {
+        window.location.href = "http://localhost:8080/add";
+    }
+
+    async function fetchProducts() {
+      try {
+        const response = await fetch("http://localhost:8080/api/products");
+        const data = await response.json();
+
+        const table = document.getElementById("productTable");
+        const tbody = document.getElementById("productBody");
+        const emptyMsg = document.getElementById("emptyMessage");
+        const countText = document.getElementById("countNotice");
+
+        tbody.innerHTML = "";
+
+        if (data && data.length > 0) {
+            listlen = data.length;
+          data.forEach((item, idx) => {
+            const row = document.createElement("tr");
+            row.className = "text-center";
+            row.innerHTML = `
+              <td class="border px-4 py-2">${idx + 1}</td>
+              <td class="border px-4 py-2">${item.name}</td>
+              <td class="border px-4 py-2">${item.price}</td>
+              <td class="border px-4 py-2">${item.limit_date}</td>
+              <td class="border px-4 py-2">
+                <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">수정</button>
+              </td>
+              <td class="border px-4 py-2">
+                <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">삭제</button>
+              </td>
+            `;
+            tbody.appendChild(row);
+          });
+
+          table.classList.remove("hidden");
+          emptyMsg.classList.add("hidden");
+        } else {
+          table.classList.add("hidden");
+          emptyMsg.classList.remove("hidden");
+          document.getElementById("emptyMessage").textContent = "상품 목록이 비어있습니다.";
+        }
+
+        countText.textContent = data? `▲ 총 ${data.length}개의 상품이 있습니다.` : "▲ 총 0개의 상품이 있습니다.";
+      } catch (err) {
+        console.error("API 호출 실패:", err);
+        document.getElementById("emptyMessage").textContent = "데이터를 불러오는 중 오류가 발생했습니다.";
+      }
+    }
+
+    // 페이지 로드 시 실행
+    fetchProducts();
+</script>
 </body>
 </html>
