@@ -23,4 +23,24 @@ public class ApiController {
         productList.add(req);
         return ResponseEntity.ok(new PostResponseDto("ok")); // ✅ 항상 JSON 응답
     }
+    
+    @GetMapping("/product")
+    public ResponseEntity<ProductDto> getOneProduct(@RequestParam("index") int index) {
+        if (index >= 0 && index < productList.size()) {
+            return ResponseEntity.ok(productList.get(index));
+        } else {
+            return ResponseEntity.badRequest().build(); // 인덱스 범위 오류
+        }
+    }
+    
+    @PostMapping("/edit")
+    public ResponseEntity<PostResponseDto> edit(@RequestBody EditDto req){
+        ProductDto updated = new ProductDto(
+                req.getName(),
+                req.getPrice(),
+                req.getLimit_date()
+        );
+        productList.set(req.getIndex(), updated);
+        return ResponseEntity.ok(new PostResponseDto("ok")); // ✅ 항상 JSON 응답
+    }
 }

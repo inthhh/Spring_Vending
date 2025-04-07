@@ -1,10 +1,124 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>자판기 상품 수정</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-700 min-h-screen flex items-center justify-center text-white px-4">
+    <div class="w-full max-w-md bg-red-700 p-6 rounded">
+      <h2 class="text-center text-2xl font-bold mb-6">자판기 상품 수정</h2>
 
-</body>
+      <form id="productForm" class="space-y-4" method="post" onsubmit="editData(event)">
+        <div>
+          <label class="block text-left font-semibold mb-1" for="name">상품명:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            class="w-full px-4 py-2 rounded bg-white text-black"
+            placeholder="예: 상추버거"
+          />
+        </div>
+
+        <div>
+          <label class="block text-left font-semibold mb-1" for="price">가격:</label>
+          <input
+            type="number"
+            id="price"
+            name="price"
+            required
+            class="w-full px-4 py-2 rounded bg-white text-black"
+            placeholder="예: 3000"
+          />
+        </div>
+
+        <div>
+          <label class="block text-left font-semibold mb-1" for="date">유통기한:</label>
+          <input type="date" id="date" name="date" required class="w-full px-4 py-2 rounded bg-white text-black" />
+        </div>
+
+        <div class="flex justify-between pt-4">
+          <button type="submit" class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded">
+            상품 수정 완료!
+          </button>
+          <button
+            type="button"
+            onclick="goBack()"
+            class="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded"
+          >
+            돌아가기
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+      }
+
+      async function loadProductForEdit() {
+        const index = getQueryParam("index");
+
+        try {
+          const res = await fetch(`http://localhost:8080/api/product?index=${index}`);
+          if (!res.ok) {
+            throw new Error("상품 데이터를 불러올 수 없습니다.");
+          }
+
+          const data = await res.json();
+          console.log("받은 상품 정보:", data);
+
+          document.getElementById("name").value = data.name;
+          document.getElementById("price").value = data.price;
+          document.getElementById("date").value = data.limit_date;
+        } catch (err) {
+          alert("에러: " + err.message);
+        }
+      }
+
+      function goBack() {
+        window.location.href = "http://localhost:8080";
+      }
+
+      async function editData(e) {
+        e.preventDefault();
+        const index = getQueryParam("index");
+        const name = document.getElementById("name").value;
+        const price = document.getElementById("price").value;
+        const date = document.getElementById("date").value;
+
+        const payload = {
+          index: index,
+          name: name,
+          price: parseInt(price),
+          limit_date: date,
+        };
+
+        try {
+          const res = await fetch("http://localhost:8080/api/edit", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          });
+
+          const result = await res.json();
+          console.log(result);
+          if (result.status === "ok") {
+            alert("상품이 성공적으로 수정되었습니다!");
+            window.location.href = "http://localhost:8080";
+          } else {
+            alert("상품 수정 실패: " + result.message);
+          }
+        } catch (err) {
+          alert("서버 통신 오류: " + err.message);
+        }
+      }
+    </script>
+  </body>
 </html>
