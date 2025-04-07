@@ -26,13 +26,14 @@
     <table id="productTable" class="w-full table-auto hidden border border-red-300">
         <thead class="bg-red-100">
         <tr>
-            <th class="border px-4 py-2">번호</th>
-            <th class="border px-4 py-2">상품명</th>
-            <th class="border px-4 py-2">가격</th>
-            <th class="border px-4 py-2">유통기한</th>
-            <th class="border px-4 py-2">수정</th>
-            <th class="border px-4 py-2">삭제</th>
+            <th id="thNum" class="border px-4 py-2">번호</th>
+            <th id="thName" class="border px-4 py-2">상품명</th>
+            <th id="thPrice" class="border px-4 py-2">가격</th>
+            <th id="thDate" class="border px-4 py-2">유통기한</th>
+            <th id="thEdit" class="border px-4 py-2">수정</th>
+            <th id="thDelete" class="border px-4 py-2">삭제</th>
         </tr>
+
         </thead>
         <tbody id="productBody">
         <!-- 데이터 삽입 -->
@@ -49,26 +50,54 @@
     let listlen = 0;
 
     function toggleLang(btn) {
-        const dot = btn.querySelector('.dot');
-        dot.classList.toggle('translate-x-5');
-        const isEnglish = dot.classList.contains('translate-x-5');
+      const dot = btn.querySelector('.dot');
+      dot.classList.toggle('translate-x-5');
+      const isEnglish = dot.classList.contains('translate-x-5');
 
-        const title = document.getElementById('titleText');
-        const listBtn = document.getElementById('listButton');
-        const countNotice = document.getElementById('countNotice');
-        const addProductBtn = document.getElementById('addProductBtn');
+      const title = document.getElementById('titleText');
+      const listBtn = document.getElementById('listButton');
+      const countNotice = document.getElementById('countNotice');
+      const addProductBtn = document.getElementById('addProductBtn');
 
-        if (isEnglish) {
-          title.textContent = '★ VENDING MACHINE ★';
-          listBtn.textContent = '▽ Product List';
-          countNotice.textContent = `▲ Total (${listlen} item)`;
-          addProductBtn.textContent = 'Add Product';
-        } else {
-          title.textContent = '★ 자판기 프로그램 ★';
-          listBtn.textContent = '▽ 자판기 상품 목록';
-          countNotice.textContent = `▲ 총 ${listlen}개의 상품이 있습니다.`;
-          addProductBtn.textContent = '상품 추가하기!';
-        }
+      const thNum = document.getElementById('thNum');
+      const thName = document.getElementById('thName');
+      const thPrice = document.getElementById('thPrice');
+      const thDate = document.getElementById('thDate');
+      const thEdit = document.getElementById('thEdit');
+      const thDelete = document.getElementById('thDelete');
+      const editBtn = document.getElementById('editBtn');
+      const removeBtn = document.getElementById('removeBtn');
+
+      if (isEnglish) {
+        title.textContent = '★ VENDING MACHINE ★';
+        listBtn.textContent = '▽ Product List';
+        countNotice.textContent = `▲ Total (${listlen} item)`;
+        addProductBtn.textContent = 'Add Product';
+
+        thNum.textContent = 'Num';
+        thName.textContent = 'Name';
+        thPrice.textContent = 'Price';
+        thDate.textContent = 'LimitDate';
+        thEdit.textContent = 'Edit';
+        thDelete.textContent = 'Remove';
+        editBtn.textContent = 'Edit';
+        removeBtn.textContent = 'Remove';
+
+      } else {
+        title.textContent = '★ 자판기 프로그램 ★';
+        listBtn.textContent = '▽ 자판기 상품 목록';
+        countNotice.textContent = `▲ 총 ${listlen}개의 상품이 있습니다.`;
+        addProductBtn.textContent = '상품 추가하기!';
+
+        thNum.textContent = '번호';
+        thName.textContent = '상품명';
+        thPrice.textContent = '가격';
+        thDate.textContent = '유통기한';
+        thEdit.textContent = '수정';
+        thDelete.textContent = '삭제';
+        editBtn.textContent = '수정';
+        removeBtn.textContent = '삭제';
+      }
     }
 
     function moveToAdd() {
@@ -98,10 +127,10 @@
               <td class="border px-4 py-2">${item.price}</td>
               <td class="border px-4 py-2">${item.limit_date}</td>
               <td class="border px-4 py-2">
-                <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">수정</button>
+                <button id="editBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">수정</button>
               </td>
               <td class="border px-4 py-2">
-                <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">삭제</button>
+                <button id="removeBtn" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">삭제</button>
               </td>
             `;
             tbody.appendChild(row);
