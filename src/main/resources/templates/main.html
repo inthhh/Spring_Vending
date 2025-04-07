@@ -113,6 +113,22 @@
         window.location.href = `http://localhost:8080/edit?index=${idx}`;
       }
 
+      async function clickForRemove(idx) {
+          try {
+            const response = await fetch(`http://localhost:8080/api/remove?index=${idx}`, {
+              method: "DELETE"
+            });
+            if (!response.ok) {
+              throw new Error("삭제 요청 실패");
+            }
+            alert("상품이 성공적으로 삭제되었습니다!");
+            fetchProducts(); // 목록 새로고침
+          } catch (err) {
+            console.error("API 호출 실패:", err);
+            document.getElementById("emptyMessage").textContent = "삭제 중 오류가 발생했습니다.";
+          }
+        }
+
       async function fetchProducts() {
         try {
           const response = await fetch("http://localhost:8080/api/products");
@@ -140,7 +156,8 @@
                 class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">수정</button>
               </td>
               <td class="border px-4 py-2">
-                <button id="removeBtn" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">삭제</button>
+                <button id="removeBtn" onclick="clickForRemove(${idx})"
+                class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">삭제</button>
               </td>
             `;
               tbody.appendChild(row);

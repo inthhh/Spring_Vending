@@ -19,7 +19,6 @@ public class MainController {
     
     @GetMapping("/edit")
     public String edit(@RequestParam("index") int index) {
-        
         return "edit";
     }
 }

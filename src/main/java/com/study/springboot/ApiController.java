@@ -43,4 +43,15 @@ public class ApiController {
         productList.set(req.getIndex(), updated);
         return ResponseEntity.ok(new PostResponseDto("ok")); // ✅ 항상 JSON 응답
     }
+    
+    @DeleteMapping("/remove")
+    public ResponseEntity<PostResponseDto> remove(@RequestParam("index") int index) {
+        if (index >= 0 && index < productList.size()) {
+            productList.remove(index);
+            return ResponseEntity.ok(new PostResponseDto("ok"));
+        } else {
+            return ResponseEntity.badRequest().body(new PostResponseDto("fail"));
+        }
+    }
+    
 }
