@@ -12,7 +12,8 @@
 ### 📍 기능 1. 한/영 언어 변환<br>
 <img width="400" alt="image" src="https://github.com/user-attachments/assets/95af21db-9b08-47ba-8e67-0499471f4ba0" />
 <br>
-<img width="400" alt="image" src="https://github.com/user-attachments/assets/b1d9bb3c-5ff1-44dc-b87d-70da6b7f5390" />
+<img width="400" alt="image" src="https://github.com/user-attachments/assets/9b0271c4-b984-450b-a078-426a15cf404e" />
+
 
 ### 📍 기능 2. 데이터 추가<br>
 ![add](https://github.com/user-attachments/assets/f66ed641-2a2b-430e-a4d1-64dbab96b0a7)
