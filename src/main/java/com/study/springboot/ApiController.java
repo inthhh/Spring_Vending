@@ -8,7 +8,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/vi")
 public class ApiController {
     
     private List<ProductDto> productList = new ArrayList<>();
