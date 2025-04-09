@@ -1,11 +1,11 @@
 # 🍔 FullStack 개발 - 자판기 만들기
 
 <strong>[ API 명세 ]</strong>
-- /api/products (GET) : 전체 데이터 목록 조회
-- /api/add (POST) : 데이터 추가
-- /api/product?index= (GET) : 단일 데이터 조회
-- /api/edit (POST) : 데이터 수정
-- /api/remove (DELETE) : 데이터 삭제
+- /api/v1/products (GET) : 전체 데이터 목록 조회
+- /api/v1/add (POST) : 데이터 추가
+- /api/v1/product?index= (GET) : 단일 데이터 조회
+- /api/v1/edit (POST) : 데이터 수정
+- /api/v1/remove (DELETE) : 데이터 삭제
 
 <hr>
 
